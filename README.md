@@ -1,7 +1,10 @@
 #
 
 Desafio Quasar
+
+
 Instalação e Execução do Projeto Quasar
+
 Este é um guia rápido para configurar e executar o projeto Quasar localmente.
 
 Pré-requisitos

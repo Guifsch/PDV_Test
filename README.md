@@ -1,4 +1,4 @@
-# Desafio iCert (desafio-icert)
+#
 
 Desafio Quasar
 
@@ -15,6 +15,7 @@ Instalar o Quasar CLI
 Caso você ainda não tenha o Quasar CLI instalado, utilize o seguinte comando para instalá-lo globalmente:
 
 npm install -g @quasar/cli
+
 Como Iniciar o Projeto
 Passo 1: Clonar o Repositório
 Primeiro, clone o repositório para sua máquina local:

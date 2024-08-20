@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted, onBeforeUnmount } from "vue";
 import SelectProduct from "../components/SelectProduct.vue";
 import FormatProductValue from "../components/FormatProductValue.vue";
 import IncrementDecrementButton from "../components/IncrementDecrementButton.vue";
@@ -180,6 +180,23 @@ watch(
   },
   { immediate: true }
 );
+
+// Função para acionar o clique no botão quando "Enter" é pressionado
+function handleEnterKeyPress(event) {
+  if (event.key === "Enter") {
+    addProductsToList();
+  }
+}
+
+// Adiciona o listener ao montar o componente
+onMounted(() => {
+  window.addEventListener("keydown", handleEnterKeyPress);
+});
+
+// Remove o listener ao desmontar o componente
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", handleEnterKeyPress);
+});
 </script>
 
 <style lang="sass" scoped>

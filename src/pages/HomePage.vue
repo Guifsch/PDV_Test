@@ -1,6 +1,6 @@
 <template>
   <q-page class="home row justify-center">
-    <div class="q-pa-md example-row-variable-width col-12 col-md-6">
+    <div class="q-pa-md example-row-variable-width col-12 col-lg-6">
       <div class="row justify-center">
         <div class="col-12 q-mb-md">
           <SelectProduct
@@ -28,6 +28,7 @@
 
       <div class="col-12 q-mb-md">
         <DiscountAndIncrease
+          :resetFields="productResetField"
           :initialPrice="selectedProductUnitValue"
           @finalPriceUpdated="updateFinalPrice"
           @unitPriceUpdated="unitPriceUpdated"
@@ -36,7 +37,7 @@
       </div>
 
       <div class="row q-col-gutter-md">
-        <div class="row col-12 col-md-6">
+        <div class="col-12 col-md-6">
           <IncrementDecrementButton
             @update:quantity="handleQuantityUpdate"
             :initialQuantity="initialQuantity"
@@ -54,7 +55,7 @@
       </div>
     </div>
 
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-lg-6">
       <ProductList />
     </div>
   </q-page>
@@ -70,9 +71,7 @@ import ProductList from "../components/ProductList.vue";
 import { useProductStore } from "../store/useProductStore.js";
 
 const productStore = useProductStore(); // Usando o Pinia store
-
 const productResetField = ref(false);
-const productArray = ref([]);
 const selectedProduct = ref(null);
 const initialQuantity = ref(false);
 const currentQuantity = ref(0);
@@ -81,13 +80,8 @@ const finalProductValue = ref(0);
 const productList = ref([]);
 const finaProductUnitValue = ref(0);
 
-// Objetos para armazenar os valores de desconto e acréscimo
-const discount = ref({ value: 0, percentage: 0 });
-const increase = ref({ value: 0, percentage: 0 });
-
 // Função para resetar todos os campos
 function resetFields() {
-  productArray.value = [];
   selectedProduct.value = null;
   selectedProductUnitValue.value = 0;
   finalProductValue.value = 0;
@@ -106,8 +100,7 @@ function addProductsToList() {
   productStore.addProducts(productList.value);
   productList.value = [];
   productResetField.value = true;
-  // resetFields();
-  console.log(productList.value, "Leite");
+  resetFields();
 }
 
 // Função para lidar com a quantidade atualizada emitida pelo IncrementDecrementButton
@@ -157,7 +150,6 @@ function updateProductList() {
   for (let i = 0; i < currentQuantity.value; i++) {
     productList.value.push({ ...selectedProduct.value, preco: unitPrice });
   }
-  console.log(productList.value, "Louro3");
 }
 
 // Função para atualizar o preço de cada item no productList quando finaProductUnitValue mudar
@@ -169,7 +161,6 @@ function updateProductPrices(newPrice) {
       item.preco = newPrice;
     }
   });
-  console.log(productList.value, "Louro2");
 }
 
 // Observa mudanças no produto selecionado e ajusta a quantidade inicial
@@ -186,14 +177,6 @@ watch(
   finaProductUnitValue,
   (newValue) => {
     updateProductPrices(newValue);
-  },
-  { immediate: true }
-);
-
-watch(
-  productList.value,
-  (newValue) => {
-    console.log(productList.value, "Louro");
   },
   { immediate: true }
 );

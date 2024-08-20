@@ -1,5 +1,13 @@
 <template>
-  <q-input filled v-model.number="quantity" outlined dense min="0">
+  <q-input
+    filled
+    v-model.number="quantity"
+    outlined
+    dense
+    min="0"
+    color="black"
+    :disable="!props.initialQuantity"
+  >
     <template v-slot:prepend>
       <q-btn
         icon="remove"
@@ -69,6 +77,7 @@ watch(quantity, (newValue) => {
   emit("update:quantity", quantity.value);
 });
 
+//Função que monitora e ajusta o valor de quantity para 1 ou 0 dependendo do valor de initialQuantity.
 watch(
   () => props.initialQuantity,
   (newInitialQuantity) => {

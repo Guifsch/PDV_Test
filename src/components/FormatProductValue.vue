@@ -4,6 +4,7 @@
     filled
     v-model="displayedValue"
     :label="descricao"
+    color="black"
     @input="updateValue"
     readonly
   />
@@ -49,7 +50,6 @@ function updateValue(value) {
 watch(
   () => props.preco,
   (newPreco) => {
-    console.log(newPreco, "AAA");
     const validPreco = newPreco < 0 ? 0 : newPreco; // Verifica se o preco é negativo
     selectedProductValue.value = validPreco;
     displayedValue.value = formatCurrency(validPreco);

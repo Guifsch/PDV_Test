@@ -4,10 +4,11 @@
       <q-table
         :rows="productStore.productList"
         :columns="columns"
-        row-key="referencia"
-        class="q-mt-md"
+        :row-key="getRowKey"
+        class="q-mt-md custom-td"
         :rows-per-page-options="[5, 10, 20]"
         style="min-height: 400px"
+        rows-per-page-label="Itens por página:"
       >
         <template v-slot:no-data>
           <div class="no-data-message">Nenhum item neste pedido!</div>
@@ -21,6 +22,7 @@
             <q-btn
               icon="delete"
               color="negative"
+              style="font-size: 18px"
               @click="removeProduct(props.row)"
               flat
               dense
@@ -103,6 +105,11 @@ const handleFinalPriceUpdate = (newValue) => {
   updateFinalPrice.value = newValue;
 };
 
+// Garante que mesmo que os itens sejam repetidos, eles possuam uma chave individual na table
+const getRowKey = (row, index) => {
+  return `${row.referencia}-${index}`;
+};
+
 // Colunas para o q-table
 const columns = [
   {
@@ -112,6 +119,7 @@ const columns = [
     align: "left",
     field: "nome",
     sortable: true,
+    headerStyle: "font-weight: bold; font-size: 18px",
   },
   {
     name: "referencia",
@@ -120,6 +128,7 @@ const columns = [
     align: "left",
     field: "referencia",
     sortable: true,
+    headerStyle: "font-weight: bold; font-size: 18px",
   },
   {
     name: "preco",
@@ -128,8 +137,14 @@ const columns = [
     align: "left",
     field: "preco",
     sortable: true,
+    headerStyle: "font-weight: bold; font-size: 18px",
   },
-  { name: "acoes", label: "Ações", align: "left" },
+  {
+    name: "acoes",
+    label: "Ações",
+    align: "left",
+    headerStyle: "font-weight: bold; font-size: 18px",
+  },
 ];
 </script>
 
@@ -139,5 +154,11 @@ const columns = [
   font-size: 20px;
   top: 60px;
   left: 10px;
+}
+:deep(.q-table tbody td) {
+  font-size: 15px;
+}
+:deep(.q-table__bottom) {
+  font-size: 15px;
 }
 </style>

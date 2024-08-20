@@ -6,6 +6,7 @@
         class="col-7 discount"
         filled
         type="number"
+        color="black"
         label="Desconto Unitário"
         min="0"
         v-model="localDiscountValue"
@@ -15,6 +16,7 @@
       <q-input
         class="col-5 discount2"
         filled
+        color="black"
         min="0"
         type="number"
         v-model="localDiscountPercentage"
@@ -27,6 +29,7 @@
     <div class="row justify-center col-12 col-md-6">
       <q-input
         filled
+        color="black"
         class="col-7 discount"
         type="number"
         min="0"
@@ -37,6 +40,7 @@
       </q-input>
       <q-input
         filled
+        color="black"
         class="col-5 discount2"
         type="number"
         min="0"
@@ -60,6 +64,10 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
+  resetFields: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const emit = defineEmits(["finalPriceUpdated", "unitPriceUpdated"]);
@@ -79,12 +87,6 @@ const unitProductValue = computed(() => {
     productPrice -= parseFloat(localDiscountValue.value);
   }
 
-  // Agora aplicar o desconto percentual sobre o valor descontado
-  if (parseFloat(localDiscountPercentage.value) > 0) {
-    productPrice -=
-      (productPrice * parseFloat(localDiscountPercentage.value)) / 100;
-  }
-
   // Aplicar o acréscimo unitário
   if (parseFloat(localIncreaseValue.value) > 0) {
     productPrice += parseFloat(localIncreaseValue.value);
@@ -94,6 +96,12 @@ const unitProductValue = computed(() => {
   if (parseFloat(localIncreasePercentage.value) > 0) {
     productPrice +=
       (productPrice * parseFloat(localIncreasePercentage.value)) / 100;
+  }
+
+  // Agora aplicar o desconto percentual sobre o valor após acréscimos
+  if (parseFloat(localDiscountPercentage.value) > 0) {
+    productPrice -=
+      (productPrice * parseFloat(localDiscountPercentage.value)) / 100;
   }
 
   return productPrice.toFixed(2); // Valor unitário calculado
@@ -147,6 +155,24 @@ watch(localIncreasePercentage, (newVal) => {
 watch(finalProductValue, (newVal) => {
   emit("finalPriceUpdated", parseFloat(newVal) || 0.0);
 });
+
+// Função para resetar os valores dos campos
+function resetInputFields() {
+  localDiscountValue.value = "0.00";
+  localDiscountPercentage.value = "0.0";
+  localIncreaseValue.value = "0.00";
+  localIncreasePercentage.value = "0.0";
+}
+
+// Watch para observar a prop resetFields
+watch(
+  () => props.resetFields,
+  (newVal) => {
+    if (newVal === true) {
+      resetInputFields();
+    }
+  }
+);
 </script>
 
 <style scoped>

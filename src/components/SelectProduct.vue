@@ -4,6 +4,7 @@
     v-model="selectedProduct"
     :use-input="!selectedProduct"
     input-debounce="300"
+    color="black"
     label="Selecione um produto"
     :options="filteredOptions"
     @filter="filterFn"
@@ -16,7 +17,10 @@
     :display-value="displayValue"
   >
     <template v-slot:prepend>
-      <q-icon style="height: 100%; top: 5px; align-items: end" name="search" />
+      <q-icon
+        style="font-size: 40px; height: 100%; top: 5px; align-items: end"
+        name="search"
+      />
     </template>
     <template v-slot:option="scope">
       <q-item v-bind="scope.itemProps">
